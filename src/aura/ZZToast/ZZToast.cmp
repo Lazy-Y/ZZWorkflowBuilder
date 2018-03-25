@@ -1,0 +1,13 @@
+<aura:component >
+    <aura:attribute name="display" type="String" default="none" />
+    <aura:attribute name="type" type="String" required="true" />
+    <aura:attribute name="message" type="String" required="true" />
+    <aura:method name="show" action="{!c.show}" access="PUBLIC" /> 
+    <div aura:id="body" class="slds-notify_container slds-is-absolute" style="{!'display:' + v.display}">
+        <div aura:id="type" class="{!'slds-notify slds-notify_toast slds-theme_' + v.type}" role="alert">
+            <div class="slds-notify__content">
+                <h2 aura:id="message" class="slds-text-heading_small ">{!v.message}</h2>
+            </div>
+        </div>
+    </div>
+</aura:component>

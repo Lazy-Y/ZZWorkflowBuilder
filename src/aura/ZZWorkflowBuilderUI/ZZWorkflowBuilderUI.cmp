@@ -1,0 +1,43 @@
+<aura:component controller="ZZWorkflowController" access="global">
+    <ltng:require styles="{!$Resource.vis + '/dist/vis-network.min.css'}" scripts="{!$Resource.visjs}" afterScriptsLoaded="{!c.init}" />
+    <aura:attribute name="network" type="Object" />
+    <aura:attribute name="wfmodelMap" type="Map" default="{}" />
+    <aura:attribute name="wfinstanceMap" type="Map" default="{}" />
+    <aura:attribute name="wfparams" type="String" default="" />
+    <aura:method name="init" action="{!c.init}" />
+    <aura:handler name="setValue" event="c:ZZPickListValueChanged" action="{!c.handlePicklistValueChange}" />
+    <aura:handler name="executeAction" event="c:ZZWorkflowBuilderEvent" action="{!c.executePhaseAction}" />
+    <aura:handler name="setPhaseParams" event="c:ZZWorkflowBuilderEvent" action="{!c.setPhaseParams}" />
+    <aura:handler name="editPhase" event="c:ZZWorkflowBuilderEvent" action="{!c.editPhase}" />
+    <aura:handler name="clonePhase" event="c:ZZWorkflowBuilderEvent" action="{!c.clonePhase}" />
+    <aura:handler name="toast" event="c:ZZToastEvent" action="{!c.handleToast}" />
+    <aura:registerEvent name="toast" type="c:ZZToastEvent" />
+    <c:ZZWorkflowModelForm aura:id="wfmodelCreator" />
+    <c:ZZWorkflowInstanceForm aura:id="wfinstanceCreator" />
+    <c:ZZPhaseModelForm aura:id="pmodelCreator" />
+    <c:ZZToast aura:id="toaster" type="success" message="" />
+    <div id="graph" />
+    <div id="controlPane">
+        <div class="slds-panel slds-grid slds-grid_vertical slds-nowrap slds-scrollable_y">
+            <div class="slds-form slds-form_stacked slds-grow">
+                <div class="slds-panel__section slds-border_bottom">
+                    <h3 class="slds-text-heading_small slds-m-bottom_medium">Workflow</h3>
+                    <c:ZZPickList aura:id="wfmodelPicklist" name="wfmodel" />
+                    <c:ZZPickList aura:id="wfinstancePicklist" name="wfinstance" display="none" />
+                    <div aura:id="parameters" style="display:none;">
+                        <lightning:textarea name="Parameters" value="{!v.wfparams}" label="Parameters" maxlength="30000" onblur="{!c.setParams}" />
+                    </div>
+                    <div class="slds-button-group slds-m-top_small slds-size_1-of-1" role="group">
+                        <lightning:button aura:id="wfNewBtn" class="slds-size_1-of-3 slds-button slds-button_neutral slds-grow" onclick="{!c.createWFModel}" label="New" />
+                        <lightning:button aura:id="wfBuildBtn" class="slds-size_1-of-3 slds-button slds-button_neutral slds-grow" disabled="true" label="Build" onclick="{!c.buildWFInstance}" />
+                        <lightning:button aura:id="wfKickOffBtn" class="slds-size_1-of-3 slds-button slds-button_neutral slds-grow" disabled="true" label="Kick Off" onclick="{!c.kickOffWorkflow}" />
+                    </div>
+                    <div class="slds-button-group slds-m-top_small slds-size_1-of-1" role="group" style="margin-left:0px;">
+                        <lightning:button aura:id="wfSaveBtn" class="slds-size_1-of-3 slds-button slds-button_neutral slds-grow" onclick="{!c.saveWFModel}" disabled="true" label="Save" />
+                    </div>
+                </div>
+                <c:ZZPhasePane aura:id="phasePane" />
+            </div>
+        </div>
+    </div>
+</aura:component>

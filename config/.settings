@@ -1,0 +1,16 @@
+{
+    "projectName": "ZZWorkflowBuilder",
+    "username": "zhenyang@lazy-y.com.workflow",
+    "id": "87583dc0-2fea-11e8-93af-6b94c91f5261",
+    "namespace": "",
+    "orgType": "developer",
+    "loginUrl": "https://login.salesforce.com/",
+    "instanceUrl": "https://zzworkflow-dev-ed.my.salesforce.com",
+    "workspace": "/Users/zhenyangzhong/Documents/Salesforce",
+    "subscription": [
+        "ApexClass",
+        "AuraDefinitionBundle",
+        "CustomObject",
+        "StaticResource"
+    ]
+}

@@ -1,0 +1,63 @@
+<aura:component >
+    <aura:attribute name="wfinstanceId" type="String" />
+    <aura:attribute name="pmodelId" type="String" />
+    <aura:attribute name="params" type="String" default="" />
+    <aura:attribute name="node" type="Map" default="{}" access="PUBLIC" />
+    <aura:method name="show" action="{!c.show}" access="PUBLIC" /> 
+    <aura:method name="hide" action="{!c.hide}" access="PUBLIC" /> 
+    <aura:method name="setup" action="{!c.setup}" access="PUBLIC" >
+	    <aura:attribute name="node" type="Map" default="{}" />
+    </aura:method> 
+    <aura:registerEvent name="setPhaseParams" type="c:ZZWorkflowBuilderEvent" />
+    <aura:registerEvent name="editPhase" type="c:ZZWorkflowBuilderEvent" />
+    <aura:registerEvent name="clonePhase" type="c:ZZWorkflowBuilderEvent" />
+    <aura:registerEvent name="executeAction" type="c:ZZWorkflowBuilderEvent" />
+	<div aura:id="body" class="slds-panel__section slds-border_bottom" style="display:none">
+	    <h3 class="slds-text-heading_small slds-m-bottom_medium">Phase</h3>
+	    <label aura:id="phaseName">{!'Name: ' + v.node.label}</label>
+	    <div aura:id="model" style="margin-top:10px;">
+	    	<div aura:id="statuses">
+		    	<label>Statuses:</label>
+	            <aura:iteration items="{!v.node.statuses}" var="status">
+	                <li style="font-size:11px">{!status}</li>
+	            </aura:iteration>
+	        </div>
+	    </div>
+        <div aura:id="default_status" style="margin-top:10px;">
+            <label>{!'Default Status: ' + v.node.Default_Status__c}</label>
+        </div>
+	    <div aura:id="instance" style="margin-top:10px;">
+	    	<div><label aura:id="status" >{!'Status: ' + v.node.Status__c}</label></div>
+	    	<div style="margin-top:10px"><label aura:id="action" >{!'On Going Action: ' + v.node.On_Going_Action__c}</label></div>
+	    </div>
+        <div aura:id="controller" style="margin-top:10px;">
+            <label>{!'Controller: ' + v.node.Phase_Controller__c}</label>
+        </div>
+        <div>
+            <lightning:textarea aura:id="params" name="params" value="{!v.node.Parameters__c}" label="Parameters" maxlength="30000" onblur="{!c.setParams}" readonly="true" />
+        </div>
+        <div aura:id="actions" style="margin-top:10px;" >
+            <label >Actions:</label>
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer"  style="font-size:11px">
+                <thead class="slds-text-title_caps">
+                    <th scope="col" style="font-size:11px">Name</th>
+                    <th scope="col" style="font-size:11px">Next</th>
+                    <th scope="col" style="font-size:11px">Hook</th>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.node.actions}" var="action">
+                        <tr onclick="{!c.executeAction}" data-action="{!action.name}" style="cursor:pointer;" >
+                            <th scope="row">{!action.name}</th>
+                            <th scope="row">{!action.next}</th>
+                            <th scope="row">{!action.hook}</th>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+        </div>
+        <div class="slds-button-group slds-m-top_small slds-size_1-of-1" role="group">
+            <lightning:button aura:id="editBtn" class="slds-size_1-of-3 slds-button slds-button_neutral slds-grow" onclick="{!c.editPhase}" label="Edit" />
+            <lightning:button aura:id="cloneBtn" class="slds-size_1-of-3 slds-button slds-button_neutral slds-grow" onclick="{!c.clonePhase}" label="Clone" />
+        </div>
+	</div>
+</aura:component>

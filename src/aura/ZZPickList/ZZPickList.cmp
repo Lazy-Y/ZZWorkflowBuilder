@@ -1,0 +1,44 @@
+<aura:component >
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:attribute name="state" type="String" default="combobox-picklist" />
+    <aura:attribute name="valueList" type="List" default="[]"/>
+    <aura:attribute name="filterList" type="List" />
+    <aura:attribute name="name" type="String" required="true"/>
+    <aura:attribute name="value" type="String" access="PUBLIC" />
+    <aura:attribute name="hasNone" type="Boolean" default="true"/>
+    <aura:attribute name="placeholder" type="String" default="Select an Item"/>
+    <aura:attribute name="display" type="String" default="block"/>
+    <aura:method name="setValueList" action="{!c.setValueList}" >
+        <aura:attribute name="valueList" type="List" default="[]" />
+    </aura:method>
+    <aura:method name="filter" action="{!c.filter}" />
+	<aura:method name="hide" action="{!c.hide}" access="PUBLIC" /> 
+	<aura:registerEvent name="setValue" type="c:ZZPickListValueChanged"/>
+
+    <div aura:id="body" class="slds-form-element" style="{!'display:' + v.display}">
+        <label aura:id="title" for="combobox-unique-id">{!v.name}</label>
+        <div class="slds-form-element__control">
+            <div class="slds-combobox_container slds-size_small">
+                <div aura:id="picklist" class="{!'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-' + v.state}" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                    <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                        <input aura:id="input" type="text" class="slds-input slds-combobox__input" aria-controls="listbox-unique-id" placeholder="{!v.placeholder}" onclick="{!c.show}" value="{!v.value}" onkeyup="{!c.filter}" onblur="{!c.onblur}" />
+                    </div>
+                    <div role="listbox">
+                        <ul aura:id='list' class="slds-listbox slds-scrollable_y slds-listbox_vertical slds-dropdown slds-dropdown_fluid" role="presentation"  style="max-height:200px;">
+                            <aura:if isTrue="{!v.hasNone}">
+                                <li aura:id="None" title="None" role="presentation" class="slds-listbox__item" onclick="{!c.select}">
+                                    <span style="color:lightgray" title="None" id="listbox-option-unique-id-01" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-media_center" role="option">None</span>
+                                </li>
+                            </aura:if>
+                            <aura:iteration items="{!v.filterList}" var="value">
+                                <li id="{!value}" title="{!value}" role="presentation" class="slds-listbox__item" onclick="{!c.select}">
+                                    <span title="{!value}" id="listbox-option-unique-id-01" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-media_center" role="option">{!value}</span>
+                                </li>
+                            </aura:iteration>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

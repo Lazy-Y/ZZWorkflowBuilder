@@ -1,0 +1,14 @@
+.THIS#graph {
+    position:absolute;
+    height: 100%;
+    width: 100%;
+    background: rgb(244, 246, 249);
+}
+.THIS#controlPane {
+    position: absolute;
+    overflow: scroll;
+    max-height: calc(100% - 20px);
+    width: 300px;
+    right: 10px;
+    top: 10px;
+}

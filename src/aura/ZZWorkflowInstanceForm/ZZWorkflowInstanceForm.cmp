@@ -1,0 +1,37 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    <aura:attribute name="display" type="String" default="none" />
+    <aura:attribute name="wfmodelName" type="String" />
+    <aura:attribute name="wfmodelId" type="String" />
+    <aura:attribute name="wfinstance" type="ZZWorkflowInstance__c" />
+    <aura:attribute name="wfinstanceRecord" type="ZZWorkflowInstance__c" default="{'sobjectType':'ZZWorkflowInstance__c'}" />
+    <aura:attribute name="error" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <aura:registerEvent name="toast" type="c:ZZToastEvent" />
+    <aura:registerEvent name="setValue" type="c:ZZPickListValueChanged" />
+    <aura:method name="show" action="{!c.show}" access="PUBLIC" />
+    <aura:method name="close" action="{!c.close}" access="PUBLIC" />
+    <aura:method name="create" action="{!c.create}" access="PUBLIC" />
+    <force:recordData aura:id="wfinstanceCreator" layoutType="FULL" targetRecord="{!v.wfinstance}" targetFields="{!v.wfinstanceRecord}" targetError="{!v.error}" />
+    <div aura:id="body" style="{!'display:' + v.display}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Build Workflow Instance</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning:input aura:id="wfmodel" label="Workflow Model" name="wfmodel" value="{!v.wfmodelName}" disabled="true" />
+                    <lightning:input aura:id="name" label="Name" name="name" value="{!v.wfinstanceRecord.Name}" required="true" />
+                    <lightning:textarea aura:id="params" name="params" value="{!v.wfinstanceRecord.Parameters__c}" label="Parameters" maxlength="30000" />
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button aura:id="createBtn" label="Create" class="slds-m-top--medium" variant="brand" onclick="{!c.create}" />
+                    <lightning:button aura:id="cancelBtn" label="Cancel" class="slds-m-top--medium" variant="neutral" onclick="{!c.close}" />
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <aura:if isTrue="{!not(empty(v.error))}">
+            <div class="recordError">{!v.recordError}</div>
+        </aura:if>
+    </div>
+</aura:component>

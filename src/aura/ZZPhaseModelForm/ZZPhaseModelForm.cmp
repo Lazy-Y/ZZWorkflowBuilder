@@ -1,0 +1,39 @@
+<aura:component implements="flexipage:availableForRecordHome" access="global">
+    <aura:attribute name="display" type="String" default="none" />
+    <aura:attribute name="nodeData" type="Object" />
+    <aura:attribute name="callback" type="Aura.Action" />
+    <aura:registerEvent name="toast" type="c:ZZToastEvent"/>
+	<aura:registerEvent name="setValue" type="c:ZZPickListValueChanged"/>
+	<aura:method name="show" action="{!c.show}" access="PUBLIC" /> 
+	<aura:method name="close" action="{!c.close}" access="PUBLIC" /> 
+	<aura:method name="create" action="{!c.create}" access="PUBLIC" /> 
+
+    <div aura:id="body" style="{!'display:' + v.display}">
+	    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+	        <div class="slds-modal__container">
+	            <header class="slds-modal__header">
+	                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Phase Model</h2>
+	            </header>
+	            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+	                <lightning:input aura:id="name" label="Name" name="name" value="{!v.nodeData.label}" required="true" />
+                    <lightning:input aura:id="controller" label="Controller" name="controller" value="{!v.nodeData.Phase_Controller__c}" required="false" />
+                    <lightning:input aura:id="default statuses" label="Default Status" name="default_status" value="{!v.nodeData.Default_Status__c}" required="true" />
+                    <lightning:input aura:id="statuses" label="Statuses" name="statuses" value="{!v.nodeData.Statuses__c}" required="true" />
+                    <lightning:textarea name="actions" value="{!v.nodeData.Actions__c}" label="Actions" maxlength="30000" />
+                    <lightning:textarea name="parameters" value="{!v.nodeData.Parameters__c}" label="Parameters" maxlength="30000" />
+                    <label>1. Status 'New' (case insensitive) is reserved. When automatically kicking off, only phase with 'New' status can be kicked off by executing the first action.</label>
+                    <br />
+                    <label>2. Status 'Completed' (case insensitive) is reserved for kicking off the next phase</label>
+                    <br />
+                    <label>3. Status 'Skipped' and 'Deferred' (case insensitive) is reserved for skipping the phase</label>
+                    <br />
+                    <label>4. The first action is the default action. When this phase is automated kicked off, the first action will be executed.</label>
+                </div>
+	            <footer class="slds-modal__footer">
+	                <lightning:button aura:id="createBtn" label="Done" class="slds-m-top--medium" variant="brand" onclick="{!c.create}" />
+	                <lightning:button aura:id="cancelBtn" label="Cancel" class="slds-m-top--medium" variant="neutral" onclick="{!c.close}" />
+	            </footer>
+	        </div>
+	    </section>
+	</div>
+</aura:component>
